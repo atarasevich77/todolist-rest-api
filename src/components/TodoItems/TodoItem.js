@@ -15,6 +15,8 @@ const TodoItem = (props) => {
     const nameNode = useRef(null);
     const descNode = useRef(null);
     const [todo, setTodo] = useState(props.todo);
+    const [name, setName] = useState(props.todo.name);
+    const [desc, setDesc] = useState(props.todo.description);
     const [fieldEditMode, setFieldEditMode] = useState('');
 
     const isDoneStyle = {
@@ -31,12 +33,22 @@ const TodoItem = (props) => {
         props.onStatusChange(todo);
     }
 
+    const onUpdate = (e) => {
+        e.preventDefault();
+        todo['name'] = name;
+        todo['description'] = desc;
+        props.onUpdate(todo);
+        onClose();
+    }
+
     const onDelete = () => {
         props.onDelete(todo._id);
     }
 
     const onClose = () => {
         setTodo(props.todo);
+        setName(props.todo.name);
+        setDesc(props.todo.description);
         setFieldEditMode('');
     }
 
@@ -55,7 +67,8 @@ const TodoItem = (props) => {
     return (
         <>
             <td>
-                <input type="checkbox" className="mt-3" value={todo.done}
+                <input type="checkbox" className="mt-3"
+                       value={todo.done}
                        onChange={onStatusChange}
                        checked={todo.done}
                 />
@@ -64,12 +77,12 @@ const TodoItem = (props) => {
                 {fieldEditMode === 'name' ?
                     <div className="input-group">
                         <input type="text" className="form-control" aria-label="Title"
-                               value={todo.name}
-                               onChange={(e) => setTodo({...todo, name: e.target.value})}
+                               value={name}
+                               onChange={(e) => setName(e.target.value)}
                         />
                         <div className="input-group-append">
-                            <span className="input-group-text">{cancelLogo}</span>
-                            <span className="input-group-text">{acceptLogo}</span>
+                            <span className="input-group-text" onClick={onClose}>{cancelLogo}</span>
+                            <span className="input-group-text" onClick={onUpdate}>{acceptLogo}</span>
                         </div>
                     </div>
                     :
@@ -77,7 +90,7 @@ const TodoItem = (props) => {
                           onDoubleClick={() => editMode("name")}
                           style={isDoneStyle}
                     >
-                        {todo.name}
+                        {name}
                     </span>
                 }
             </td>
@@ -85,12 +98,12 @@ const TodoItem = (props) => {
                 {fieldEditMode === 'desc' ?
                     <div className="input-group">
                         <input type="text" className="form-control" aria-label="Description"
-                               value={todo.description}
-                               onChange={(e) => setTodo({...todo, description: e.target.value})}
+                               value={desc}
+                               onChange={(e) => setDesc(e.target.value)}
                         />
                         <div className="input-group-append">
-                            <span className="input-group-text">{cancelLogo}</span>
-                            <span className="input-group-text">{acceptLogo}</span>
+                            <span className="input-group-text" onClick={onClose}>{cancelLogo}</span>
+                            <span className="input-group-text" onClick={onUpdate}>{acceptLogo}</span>
                         </div>
                     </div>
                     :
@@ -98,7 +111,7 @@ const TodoItem = (props) => {
                           onDoubleClick={() => editMode("desc")}
                           style={isDoneStyle}
                     >
-                        {todo.description}
+                        {desc}
                     </span>
                 }
             </td>

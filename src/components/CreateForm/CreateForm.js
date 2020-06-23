@@ -7,7 +7,7 @@ const CreateForm = (props) => {
     const onSubmit = (e) => {
         e.preventDefault();
         props.createTodo({name, desc});
-        setName('')
+        setName('');
         setDesc('');
     }
 

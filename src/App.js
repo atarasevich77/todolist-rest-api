@@ -34,7 +34,20 @@ function App() {
             done: todo.done,
         })
             .then(() => {
+                getAllTodos();
+            })
+            .catch(errors =>
+                console.log(errors)
+            )
+    }
 
+    const onUpdate = (todo) => {
+        api.patch(`/todo/${todo._id}`, {
+            name: todo.name,
+            description: todo.description,
+            done: todo.done
+        })
+            .then(() => {
                 getAllTodos();
             })
             .catch(errors =>
@@ -70,6 +83,7 @@ function App() {
                             <tr key={todo._id}>
                                 <TodoItem todo={todo}
                                           onStatusChange={onStatusChange}
+                                          onUpdate={onUpdate}
                                           onDelete={onDelete}
                                 />
                             </tr>
