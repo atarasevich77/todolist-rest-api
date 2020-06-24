@@ -79,8 +79,8 @@ function App() {
                 <table className="table w-75">
                     <tbody>
                     {
-                        todos.map(todo =>
-                            <tr key={todo._id}>
+                        todos.map((todo, index) =>
+                            <tr key={index}>
                                 <TodoItem todo={todo}
                                           onStatusChange={onStatusChange}
                                           onUpdate={onUpdate}

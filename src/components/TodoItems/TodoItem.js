@@ -38,6 +38,7 @@ const TodoItem = (props) => {
         todo['name'] = name;
         todo['description'] = desc;
         props.onUpdate(todo);
+        setTodo(todo);
         onClose();
     }
 
@@ -47,8 +48,6 @@ const TodoItem = (props) => {
 
     const onClose = () => {
         setTodo(props.todo);
-        setName(props.todo.name);
-        setDesc(props.todo.description);
         setFieldEditMode('');
     }
 
