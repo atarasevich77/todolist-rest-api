@@ -4,16 +4,23 @@ import CreateForm from "./components/CreateForm/CreateForm";
 import TodoItem from "./components/TodoItems/TodoItem";
 
 function App() {
+    const [servStatus, setServStatus] = useState(false);
     const [todos, setTodos] = useState([]);
+
+    const statusStyle = {
+        color: servStatus ? 'green' : 'red'
+    }
 
     const getAllTodos = () => {
         api.get('/todo')
             .then(response => {
                 setTodos(response.data)
+                setServStatus(true);
             })
-            .catch(errors =>
-                console.log(errors)
-            )
+            .catch(errors =>{
+                console.log(errors);
+                setServStatus(false);
+            })
     }
 
     const createTodo = (todo) => {
@@ -71,6 +78,7 @@ function App() {
 
     return (
         <div className="container-fluid">
+            <div className="row justify-content-sm-end p-2">Server status: &nbsp; <span style={statusStyle}>{servStatus ? 'OK' : 'Down'}</span></div>
             <h1 className="text-center p-2">ToDo list {new Date().toDateString()}</h1>
             <div className="row justify-content-center p-2">
                 <CreateForm createTodo={createTodo}/>
